@@ -25,7 +25,7 @@ public class CustomerManagementModel {
 
     }
 
-    public boolean deleteUser(String userId) throws SQLException, ClassNotFoundException {
+    public boolean deleteCustomer(String userId) throws SQLException, ClassNotFoundException {
         return CrudUtil.execute("DELETE FROM users WHERE user_Id = ?", userId);
     }
 
