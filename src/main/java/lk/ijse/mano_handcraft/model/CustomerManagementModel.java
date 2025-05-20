@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class CustomerManagementModel {
     public boolean saveCustomer(CustomerManagementDto customerManagementDto) throws SQLException, ClassNotFoundException {
-        return CrudUtil.execute("INSERT INTO customers(customer_id,customer_name,phone,address) VALUES ( ?,?,?,?,?,?)",
+        return CrudUtil.execute("INSERT INTO customers (customer_id, customer_name, phone, address) VALUES ( ?,?,?,?,?,?)",
                 customerManagementDto.getCustomer_Id(),
                 customerManagementDto.getName(),
                 customerManagementDto.getPhone(),
@@ -25,31 +25,29 @@ public class CustomerManagementModel {
 
     }
 
-    public boolean deleteCustomer(String userId) throws SQLException, ClassNotFoundException {
-        return CrudUtil.execute("DELETE FROM users WHERE user_Id = ?", userId);
+    public boolean deleteCustomer(String customer_Id) throws SQLException, ClassNotFoundException {
+        return CrudUtil.execute("DELETE FROM customers WHERE customer_Id = ?", customer_Id);
     }
 
-    public ArrayList<CustomerManagementDto> getAllUsers() throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = CrudUtil.execute("SELECT * FROM users");
-        ArrayList<CustomerManagementDto> userList = new ArrayList<>();
+    public ArrayList<CustomerManagementDto> getAllCustomers() throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = CrudUtil.execute("SELECT * FROM customers");
+        ArrayList<CustomerManagementDto> customerManagement = new ArrayList<>();
 
         while (resultSet.next()){
-            CustomerManagementDto userListDto = new UserListDto(
+            CustomerManagementDto customerManagementDto = new CustomerManagementDto(
                     resultSet.getString(1),
                     resultSet.getString(2),
                     resultSet.getString(3),
-                    resultSet.getString(4),
-                    resultSet.getString(5),
-                    resultSet.getString(6)
+                    resultSet.getString(4)
             );
-            userList.add(userListDto);
+            customerManagement.add(customerManagementDto);
         }
-        return userList;
+        return customerManagement;
     }
 
-    public String getNextUserId() throws SQLException , ClassNotFoundException{
-        ResultSet resultSet = CrudUtil.execute("SELECT user_id FROM users ORDER BY user_id DESC LIMIT 1");
-        char tableCharacter = 'U';
+    public String getNextCustomerId() throws SQLException , ClassNotFoundException{
+        ResultSet resultSet = CrudUtil.execute("SELECT customer_id FROM customers ORDER BY customer_id DESC LIMIT 1");
+        char tableCharacter = 'C';
 
         if(resultSet.next()){
             String lastId = resultSet.getString(1);

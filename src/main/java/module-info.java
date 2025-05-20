@@ -6,5 +6,8 @@ module lk.ijse.mano_handcraft {
 
 
     opens lk.ijse.mano_handcraft.controller to javafx.fxml;
+    opens lk.ijse.mano_handcraft.dto.tm to javafx.base;
+
     exports lk.ijse.mano_handcraft;
+    exports lk.ijse.mano_handcraft.controller;
 }

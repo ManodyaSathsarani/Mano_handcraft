@@ -26,8 +26,6 @@ public class DashboardOController {
 
     }
 
-    public void btnCustomerOnAction(ActionEvent actionEvent) {
-    }
 
     public void btnEmployeeManagementOnAction(ActionEvent actionEvent) {
     }
@@ -44,6 +42,13 @@ public class DashboardOController {
             AnchorPane load = FXMLLoader.load(getClass().getResource("/view/LoginPage.fxml"));
             ancDashBoardA.getChildren().add(load);
         }
+    }
+
+    @FXML
+    void btnCustomerOnAction(ActionEvent actionEvent) throws IOException {
+        sidePane.getChildren().clear();
+        AnchorPane load = FXMLLoader.load(getClass().getResource("/view/CustomerManagement.fxml"));
+        sidePane.getChildren().add(load);
     }
 
 }
