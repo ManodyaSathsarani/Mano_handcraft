@@ -7,16 +7,18 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import lk.ijse.mano_handcraft.dto.SupplierManagementDto;
-import lk.ijse.mano_handcraft.dto.tm.SupplierManagementTM;
-import lk.ijse.mano_handcraft.model.SupplierManagementModel;
+import lk.ijse.mano_handcraft.dto.OrderDetailsManagementDto;
+import lk.ijse.mano_handcraft.dto.tm.OrderDetailsManagementTM;
+
+import lk.ijse.mano_handcraft.model.OrderDetailsManagementModel;
+
 
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class SupplierManagementController implements Initializable {
+public class OrderDetailsManagementController implements Initializable {
 
     @FXML
     private Button btnClear;
@@ -31,34 +33,48 @@ public class SupplierManagementController implements Initializable {
     private Button btnUpdate;
 
     @FXML
-    private TableColumn<SupplierManagementTM, String> colContactInformation;
+    private TableColumn<OrderDetailsManagementTM, String> colId;
 
     @FXML
-    private TableColumn<SupplierManagementTM, String> colId;
+    private TableColumn<OrderDetailsManagementTM, String> colOrderId;
 
     @FXML
-    private TableColumn<SupplierManagementTM, String> colName;
+    private TableColumn<OrderDetailsManagementTM, Double> colPrice;
+
+    @FXML
+    private TableColumn<OrderDetailsManagementTM, String> colProductId;
+
+    @FXML
+    private TableColumn<OrderDetailsManagementTM, String> colQuantity;
 
     @FXML
     private Label lblId;
 
     @FXML
-    private TableView<SupplierManagementTM> tblSuplier;
+    private TableView<OrderDetailsManagementTM> tblOrderDetailsManagement;
 
     @FXML
-    private TextField txtContactInformation;
+    private TextField txtOrderId;
 
     @FXML
-    private TextField txtName;
+    private TextField txtPrice;
 
+    @FXML
+    private TextField txtProductId;
 
-    private final SupplierManagementModel supplierManagementModel = new SupplierManagementModel();
+    @FXML
+    private TextField txtQuantity;
+
+    private final OrderDetailsManagementModel orderDetailsManagementModel = new OrderDetailsManagementModel();
 
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        colId.setCellValueFactory(new PropertyValueFactory<>("supplier_id"));
-        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        colContactInformation.setCellValueFactory(new PropertyValueFactory<>("contact_information"));
+        colId.setCellValueFactory(new PropertyValueFactory<>("order_id"));
+        colOrderId.setCellValueFactory(new PropertyValueFactory<>("order_id"));
+        colProductId.setCellValueFactory(new PropertyValueFactory<>("product_id"));
+        colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+
 
 
 
@@ -72,15 +88,16 @@ public class SupplierManagementController implements Initializable {
     }
 
     public void loadTableData() throws SQLException, ClassNotFoundException {
-        tblSuplier.setItems(FXCollections.observableArrayList(
-                supplierManagementModel.getAllSupplier()
+       tblOrderDetailsManagement .setItems(FXCollections.observableArrayList(
+                orderDetailsManagementModel.getAllOrderdetail()
 
                         .stream()
-                        .map(supplierManagementDto -> new SupplierManagementTM(
-                                supplierManagementDto.getSupplier_id(),
-                                supplierManagementDto.getSupplier_name(),
-                                supplierManagementDto.getContact_info()
-
+                        .map(orderDetailsManagementDto -> new OrderDetailsManagementTM(
+                                orderDetailsManagementDto.getOrder_id(),
+                                orderDetailsManagementDto.getOrder_id(),
+                                orderDetailsManagementDto.getProduct_id(),
+                                orderDetailsManagementDto.getQuantity(),
+                                orderDetailsManagementDto.getPrice()
                         )).
                         toList()
         ));
@@ -102,9 +119,13 @@ public class SupplierManagementController implements Initializable {
             btnDelete.setDisable(true);
             btnUpdate.setDisable(true);
 
-            txtName.clear();
-            txtContactInformation.clear();
-            lblId.setText("");
+            txtOrderId.setText(null);
+            txtProductId.setText(null);
+            txtQuantity.setText(null);
+            txtPrice.setText(null);
+
+
+
 
 
 
@@ -123,22 +144,27 @@ public class SupplierManagementController implements Initializable {
 
     public void btnSaveOnAction(ActionEvent actionEvent) {
         String userId = lblId.getText();
-        String userName = txtName.getText();
-        String userContactInformation = txtContactInformation.getText();
+        String userOrderId = txtOrderId.getText();
+        String userProductId = txtProductId.getText();
+        String userQuantity = txtQuantity.getText();
+        Double userPrice = Double.valueOf(txtPrice.getText());
 
 
 
 
 
 
-        SupplierManagementDto supplierManagementDto = new SupplierManagementDto(
+        OrderDetailsManagementDto orderDetailsManagementDto = new OrderDetailsManagementDto(
                 userId,
-                userName,
-                userContactInformation
+                userOrderId,
+                userProductId,
+                userQuantity,
+                userPrice
+
 
         );
         try {
-            boolean isSaved = supplierManagementModel.saveSupplier(supplierManagementDto);
+            boolean isSaved = orderDetailsManagementModel.saveOrderDetailsManagement(orderDetailsManagementDto);
 
             if (isSaved) {
                 resetPage();
@@ -154,18 +180,22 @@ public class SupplierManagementController implements Initializable {
 
     public void btnUpdateOnAction(ActionEvent actionEvent) {
         String userId = lblId.getText();
-        String userName = txtName.getText();
-        String userContactInformation = txtContactInformation.getText();
+        String userOrderId = txtOrderId.getText();
+        String userProductId = txtProductId.getText();
+        String userQuantity = txtQuantity.getText();
+        Double userPrice = Double.valueOf(txtPrice.getText());
 
 
-        SupplierManagementDto supplierManagementDto = new SupplierManagementDto(
+
+        OrderDetailsManagementDto orderDetailsManagementDto = new OrderDetailsManagementDto(
                 userId,
-                userName,
-                userContactInformation
-
+                userOrderId,
+                userProductId,
+                userQuantity,
+                userPrice
         );
         try {
-            boolean isUpdated = supplierManagementModel.updateSuppliier(supplierManagementDto);
+            boolean isUpdated = orderDetailsManagementModel.updateOrderDetailsManagement( orderDetailsManagementDto);
             if (isUpdated) {
                 resetPage();
                 new Alert(Alert.AlertType.INFORMATION, "Updated").show();
@@ -188,9 +218,9 @@ public class SupplierManagementController implements Initializable {
         Optional<ButtonType> response = alert.showAndWait();
 
         if (response.isPresent() && response.get() == ButtonType.YES) {
-            String supplier_id = lblId.getText();
+            String orderDetails_id = lblId.getText();
             try {
-                boolean isDeleted = supplierManagementModel.deleteSupplier(supplier_id);
+                boolean isDeleted = orderDetailsManagementModel.deleteOrderDetail(orderDetails_id);
                 if (isDeleted) {
                     resetPage();
                     new Alert(Alert.AlertType.INFORMATION, "Deleted").show();
@@ -210,15 +240,17 @@ public class SupplierManagementController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = supplierManagementModel.getNextSupplierrId();
+        String nextId = orderDetailsManagementModel.getNextOrderdetails();
         lblId.setText(nextId);
     }
 
     public void getData(MouseEvent mouseEvent) {
-        SupplierManagementTM selectedItem = tblSuplier.getSelectionModel().getSelectedItem();
+        OrderDetailsManagementTM selectedItem = (OrderDetailsManagementTM) tblOrderDetailsManagement.getSelectionModel().getSelectedItem();
+
+
 
         if (selectedItem != null) {
-            lblId.setText(selectedItem.getSupplier_id());
+            lblId.setText(selectedItem.getOrder_id());
 
 
 
@@ -228,6 +260,9 @@ public class SupplierManagementController implements Initializable {
         }
 
     }
+
+
+
 
 
 

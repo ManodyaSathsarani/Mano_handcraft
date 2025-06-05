@@ -11,7 +11,7 @@ public class AppInitializer extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        Image icon = new Image(getClass().getResourceAsStream("/image/—Pngtree—memphis round border_6532925.png"));
+        Image icon = new Image(getClass().getResourceAsStream("/image/4d31d8f68cbfc44970bd193acdc26064-removebg-preview.png"));
 
         Parent parent = FXMLLoader.load(getClass().getResource("/view/LoginPage.fxml"));
 

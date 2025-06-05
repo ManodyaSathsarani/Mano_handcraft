@@ -3,6 +3,7 @@ module lk.ijse.mano_handcraft {
     requires javafx.fxml;
     requires java.sql;
     requires java.management;
+    requires static lombok;
 
 
     opens lk.ijse.mano_handcraft.controller to javafx.fxml;

@@ -7,18 +7,19 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import lk.ijse.mano_handcraft.dto.InventoryManagementDto;
-import lk.ijse.mano_handcraft.dto.tm.InventoryManagementTM;
-import lk.ijse.mano_handcraft.model.EmployeeMnagementModel;
-import lk.ijse.mano_handcraft.model.InventoryManagementModel;
-
+import lk.ijse.mano_handcraft.dto.PaymentManagementDto;
+import lk.ijse.mano_handcraft.dto.ProductManagementDto;
+import lk.ijse.mano_handcraft.dto.tm.CatagorieManagementTM;
+import lk.ijse.mano_handcraft.dto.tm.PaymentManagementTM;
+import lk.ijse.mano_handcraft.dto.tm.ProductManagementTM;
+import lk.ijse.mano_handcraft.model.ProductManagementModel;
 
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class InventoryManagementController implements Initializable {
+public class ProductManagementController implements Initializable {
 
     @FXML
     private Button btnClear;
@@ -33,39 +34,48 @@ public class InventoryManagementController implements Initializable {
     private Button btnUpdate;
 
     @FXML
-    private TableColumn<InventoryManagementTM ,String> colIngredientId;
+    private TableColumn<ProductManagementTM, String > colCatagorieId;
 
     @FXML
-    private TableColumn<InventoryManagementTM, String> colInventoryId;
+    private TableColumn<ProductManagementTM, String> colDescription;
 
     @FXML
-    private TableColumn<InventoryManagementTM, String> colLastUpdate;
+    private TableColumn<ProductManagementTM, String> colId;
 
     @FXML
-    private TableColumn<InventoryManagementTM, Double> colQuantityInStock;
+    private TableColumn<ProductManagementTM, String> colName;
 
     @FXML
-    private Label lblInventoryId;
+    private TableColumn<ProductManagementTM, Double> colPrice;
 
     @FXML
-    private TableView<InventoryManagementTM> tblInventory;
+    private Label lblId;
 
     @FXML
-    private TextField txtIngredientId;
+    private TableView<ProductManagementTM> tblProduct;
 
     @FXML
-    private TextField txtLastUpdate;
+    private TextField txtCatagorieId;
 
     @FXML
-    private TextField txtQuantitiyInStock;
+    private TextField txtDescription;
 
-    private final InventoryManagementModel inventoryManagementModel = new InventoryManagementModel();
+    @FXML
+    private TextField txtName;
+
+    @FXML
+    private TextField txtPrice;
+
+    private final ProductManagementModel productManagementModel = new ProductManagementModel();
+
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        colInventoryId.setCellValueFactory(new PropertyValueFactory<>("inventory_id"));
-        colIngredientId.setCellValueFactory(new PropertyValueFactory<>("ingredient_id"));
-        colQuantityInStock.setCellValueFactory(new PropertyValueFactory<>("quantity_in_stock"));
-        colLastUpdate.setCellValueFactory(new PropertyValueFactory<>("last_updated"));
+        colId.setCellValueFactory(new PropertyValueFactory<>("product_id"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("product_name"));
+        colCatagorieId.setCellValueFactory(new PropertyValueFactory<>("catagorie_id"));
+        colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+
 
         try {
             resetPage();
@@ -76,31 +86,25 @@ public class InventoryManagementController implements Initializable {
         }
     }
 
-
-
     public void loadTableData() throws SQLException, ClassNotFoundException {
-        tblInventory.setItems(FXCollections.observableArrayList(
-                inventoryManagementModel.getAllInventory()
+        tblProduct.setItems(FXCollections.observableArrayList(
+                productManagementModel.getAllProduct()
 
                         .stream()
-                        .map(inventoryManagementDto -> new InventoryManagementTM(
-                                inventoryManagementDto.getInventory_id(),
-                                inventoryManagementDto.getIngredient_id(),
-                                inventoryManagementDto.getQuantity_in_stock(),
-                                inventoryManagementDto.getLast_updated()
+                        .map(productManagementDto -> new ProductManagementTM(
+                                productManagementDto.getProduct_id(),
+                                productManagementDto.getProduct_name(),
+                                productManagementDto.getCatagorie_id(),
+                                productManagementDto.getPrice(),
+                                productManagementDto.getDescription()
                         )).
                         toList()
         ));
-
-
-
-
-
-
     }
 
     private void resetPage() {
         try {
+
             loadTableData();
             loadNextId();
 
@@ -108,17 +112,10 @@ public class InventoryManagementController implements Initializable {
             btnDelete.setDisable(true);
             btnUpdate.setDisable(true);
 
-            txtIngredientId.setText(null);
-            txtLastUpdate.setText(null);
-            txtQuantitiyInStock.setText(null);
-
-
-
-
-
-
-
-
+            txtName.setText(null);
+            txtCatagorieId.setText(null);
+            txtDescription.setText(null);
+            txtPrice.setText(null);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -127,24 +124,21 @@ public class InventoryManagementController implements Initializable {
     }
 
     public void btnSaveOnAction(ActionEvent actionEvent) {
-        String inventoryId = lblInventoryId.getText();
-        String ingredientId = txtIngredientId.getText();
-        Double quantityInStock = Double.valueOf(txtQuantitiyInStock.getText());
-        String lastUpdate = txtLastUpdate.getText();
+        String productId = lblId.getText();
+        String Name = txtName.getText();
+        String CatagorieId = txtCatagorieId.getText();
+        String Description = txtDescription.getText();
+        Double Price = Double.parseDouble(txtPrice.getText());
 
-
-
-
-        InventoryManagementDto inventoryManagementDto = new InventoryManagementDto(
-                inventoryId,
-                ingredientId,
-                quantityInStock,
-                lastUpdate
-
-
+        ProductManagementDto productManagementDto = new ProductManagementDto(
+                productId,
+                Name,
+                CatagorieId,
+                Price,
+                Description
         );
         try {
-            boolean isSaved = inventoryManagementModel.saveInventory(inventoryManagementDto);
+            boolean isSaved = productManagementModel.saveProduct(productManagementDto);
 
             if (isSaved) {
                 resetPage();
@@ -159,22 +153,22 @@ public class InventoryManagementController implements Initializable {
     }
 
     public void btnUpdateOnAction(ActionEvent actionEvent) {
-        String inventoryId = lblInventoryId.getText();
-        String ingredientId = txtIngredientId.getText();
-        Double quantityInStock = Double.valueOf(txtQuantitiyInStock.getText());
-        String lastUpdate = txtLastUpdate.getText();
 
+        String productId = lblId.getText();
+        String Name = txtName.getText();
+        String CatagorieId = txtCatagorieId.getText();
+        String Description = txtDescription.getText();
+        Double Price = Double.parseDouble(txtPrice.getText());
 
-
-        InventoryManagementDto inventoryManagementDto = new InventoryManagementDto(
-                inventoryId,
-                ingredientId,
-                quantityInStock,
-                lastUpdate
-
+        ProductManagementDto productManagementDto = new ProductManagementDto(
+                productId,
+                Name,
+                CatagorieId,
+                Price,
+                Description
         );
         try {
-            boolean isUpdated = inventoryManagementModel.updateInventory(inventoryManagementDto);
+            boolean isUpdated = productManagementModel.updateProduct(productManagementDto);
             if (isUpdated) {
                 resetPage();
                 new Alert(Alert.AlertType.INFORMATION, "Updated").show();
@@ -197,9 +191,9 @@ public class InventoryManagementController implements Initializable {
         Optional<ButtonType> response = alert.showAndWait();
 
         if (response.isPresent() && response.get() == ButtonType.YES) {
-            String inventory_id = lblInventoryId.getText();
+            String product_id = lblId.getText();
             try {
-                boolean isDeleted = inventoryManagementModel.deleteInventory(inventory_id);
+                boolean isDeleted = productManagementModel.deleteProduct(product_id);
                 if (isDeleted) {
                     resetPage();
                     new Alert(Alert.AlertType.INFORMATION, "Deleted").show();
@@ -219,15 +213,15 @@ public class InventoryManagementController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = inventoryManagementModel.getLatestInventoryId();
-        lblInventoryId.setText(nextId);
+        String nextId = productManagementModel.getNextProductId();
+        lblId.setText(nextId);
     }
 
     public void getData(MouseEvent mouseEvent) {
-        InventoryManagementTM selectedItem = tblInventory.getSelectionModel().getSelectedItem();
+        ProductManagementTM selectedItem = tblProduct.getSelectionModel().getSelectedItem();
 
         if (selectedItem != null) {
-            lblInventoryId.setText(selectedItem.getInventory_id());
+            lblId.setText(selectedItem.getProduct_id());
 
 
 
@@ -237,6 +231,7 @@ public class InventoryManagementController implements Initializable {
         }
 
     }
+
 
 
 }

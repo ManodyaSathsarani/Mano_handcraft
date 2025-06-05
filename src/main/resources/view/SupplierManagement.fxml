@@ -84,22 +84,22 @@
                 </HBox>
                 <HBox alignment="TOP_CENTER" prefHeight="47.0" prefWidth="1201.0" spacing="100.0">
                     <children>
-                        <Button fx:id="btnSave" mnemonicParsing="false" onAction="#btnSaveOnAction" prefHeight="25.0" prefWidth="152.0" style="-fx-background-color: #16a085;" text="Save" textFill="#f8f4f4">
+                        <Button fx:id="btnSave" mnemonicParsing="false" onAction="#btnSaveOnAction" prefHeight="25.0" prefWidth="152.0" style="-fx-background-color: linear-gradient(to right, #89CFF0, #87CEFA); -fx-background-radius: 25;" text="Save" textFill="#0d0d0d">
                             <font>
                                 <Font size="24.0" />
                             </font>
                         </Button>
-                        <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#btnUpdateOnAction" prefHeight="25.0" prefWidth="146.0" style="-fx-background-color: #1B1464;" text="Update" textFill="#fffefe">
+                        <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#btnUpdateOnAction" prefHeight="25.0" prefWidth="146.0" style="-fx-background-color: linear-gradient(to right, #FFB6C1, #FF007F); -fx-background-radius: 25;" text="Update" textFill="#1b1a1a">
                             <font>
                                 <Font size="24.0" />
                             </font>
                         </Button>
-                        <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#btnDeleteOnAction" prefHeight="25.0" prefWidth="145.0" style="-fx-background-color: #e74c3c;" text="Delete" textFill="#f8f6f6">
+                        <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#btnDeleteOnAction" prefHeight="25.0" prefWidth="145.0" style="-fx-background-color: linear-gradient(to right, #FF2400, #FF6347); -fx-background-radius: 25;" text="Delete" textFill="#1e1d1d">
                             <font>
                                 <Font size="24.0" />
                             </font>
                         </Button>
-                        <Button fx:id="btnClear" mnemonicParsing="false" onAction="#btnClearOnAction" prefHeight="25.0" prefWidth="136.0" style="-fx-background-color: #f39c12;" text="Clear" textFill="#fffefe">
+                        <Button fx:id="btnClear" mnemonicParsing="false" onAction="#btnClearOnAction" prefHeight="25.0" prefWidth="136.0" style="-fx-background-color: linear-gradient(to right, #B2FFB2, #98FF98, #32CD32); -fx-background-radius: 25;" text="Clear" textFill="#141414">
                             <font>
                                 <Font size="24.0" />
                             </font>

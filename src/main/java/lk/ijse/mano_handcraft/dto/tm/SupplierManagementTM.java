@@ -1,13 +1,13 @@
-package lk.ijse.mano_handcraft.dto;
+package lk.ijse.mano_handcraft.dto.tm;
 
-public class SupplierManagementDto {
+public class SupplierManagementTM {
     private String supplier_id;
     private String supplier_name;
     private String contact_info;
 
-    public SupplierManagementDto() {
+    public SupplierManagementTM() {
     }
-    public SupplierManagementDto(String supplier_id, String supplier_name, String contact_info) {
+    public SupplierManagementTM(String supplier_id, String supplier_name, String contact_info) {
         this.supplier_id = supplier_id;
         this.supplier_name = supplier_name;
         this.contact_info = contact_info;
@@ -37,3 +37,4 @@ public class SupplierManagementDto {
         this.contact_info = contact_info;
     }
 }
+

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class CustomerManagementModel {
     public boolean saveCustomer(CustomerManagementDto customerManagementDto) throws SQLException, ClassNotFoundException {
-        return CrudUtil.execute("INSERT INTO customers (customer_id, customer_name, phone, address) VALUES ( ?,?,?,?,?,?)",
+        return CrudUtil.execute("INSERT INTO customers (customer_id, customer_name, phone, address) VALUES ( ?,?,?,?)",
                 customerManagementDto.getCustomer_Id(),
                 customerManagementDto.getName(),
                 customerManagementDto.getPhone(),

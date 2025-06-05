@@ -26,14 +26,22 @@ public class LoginPageController {
     @FXML
     private TextField txtUserName;
 
+
     @FXML
-    void btnLoginOnAction( ActionEvent actionEvent) throws IOException {
-        String inputUserName = txtUserName.getText();
-        String inputPassword = txtPassword.getText();
+    void btnLoginOnAction(ActionEvent actionEvent) {
+        String inputUserName = txtUserName.getText().trim();
+        String inputPassword = txtPassword.getText().trim();
+        System.out.println("Username entered: " + inputUserName);
+        System.out.println("Password entered: " + inputPassword);
+
+        if (inputUserName.isEmpty() || inputPassword.isEmpty()) {
+            new Alert(Alert.AlertType.ERROR, "Please fill in all fields.").show();
+            return;
+        }
 
         try {
             Connection conn = DBConnection.getInstance().getConnection();
-            String sql = "SELECT * FROM Users WHERE username = ? AND password  = ?";
+            String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, inputUserName);
             stmt.setString(2, inputPassword);
@@ -41,28 +49,25 @@ public class LoginPageController {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                if (Objects.equals(inputUserName, "manodya")){
-                    ancMainPage.getChildren().clear();
-                    AnchorPane load = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/DashboardO.fxml")));
-                    ancMainPage.getChildren().add(load);
-                }else if (Objects.equals(inputUserName,"admin")) {
-//                    ancMainPage.getChildren().clear();
-//                    AnchorPane load = FXMLLoader.load(getClass().getResource("/view/DashboardO.fxml"));
-//                    ancMainPage.getChildren().add(load);
+                if (Objects.equals(inputUserName,"manodya")){
+                    navigateTo("/view/DashboardO.fxml");
+                }
+                if (Objects.equals(inputUserName,"lasitha")){
+                    navigateTo("/view/DashboardS.fxml");
                 }
             } else {
-                System.out.println("Wrong username or password!");
+                new Alert(Alert.AlertType.ERROR, "Invalid username or password!").show();
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            new Alert(Alert.AlertType.ERROR, "Database error!").show();
         }
     }
+
     private void navigateTo(String path){
         try {
-            ancMainPage.getChildren();
+            ancMainPage.getChildren().clear();
             AnchorPane anchorPane = FXMLLoader.load(getClass().getResource(path));
 
             anchorPane.prefWidthProperty().bind(ancMainPage.widthProperty());

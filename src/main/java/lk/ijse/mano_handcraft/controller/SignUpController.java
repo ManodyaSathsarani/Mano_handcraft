@@ -1,4 +1,4 @@
 package lk.ijse.mano_handcraft.controller;
 
-public class ForgotPasswordController {
+public class SignUpController {
 }

@@ -27,8 +27,6 @@ public class DashboardOController {
     }
 
 
-    public void btnEmployeeManagementOnAction(ActionEvent actionEvent) {
-    }
 
     @FXML
     void btnLogoutOnAction() throws IOException {
@@ -51,4 +49,60 @@ public class DashboardOController {
         sidePane.getChildren().add(load);
     }
 
+    public void btnEmployeeOnAction(ActionEvent actionEvent) throws IOException {
+        sidePane.getChildren().clear();
+        AnchorPane load = FXMLLoader.load(getClass().getResource("/view/EmployeeManagement.fxml"));
+        sidePane.getChildren().add(load);
+
+
+
+    }
+
+    public void btnSupplierOnAction(ActionEvent actionEvent) throws IOException {
+        sidePane.getChildren().clear();
+        AnchorPane load = FXMLLoader.load(getClass().getResource("/view/SupplierManagement.fxml"));
+        sidePane.getChildren().add(load);
+    }
+
+    public void btnCatagorieOnAction(ActionEvent actionEvent) throws IOException {
+        sidePane.getChildren().clear();
+        AnchorPane load = FXMLLoader.load(getClass().getResource("/view/CategorieManagement.fxml"));
+        sidePane.getChildren().add(load);
+    }
+
+    public void btnInventoryOnAction(ActionEvent actionEvent) throws IOException {
+        sidePane  .getChildren().clear();
+        AnchorPane load = FXMLLoader.load(getClass().getResource("/view/InventoryManagement.fxml"));
+        sidePane.getChildren().add(load);
+    }
+
+    public void btnIngredientOnAction(ActionEvent actionEvent) throws IOException {
+        sidePane  .getChildren().clear();
+        AnchorPane load = FXMLLoader.load(getClass().getResource("/view/IngredientManagement.fxml"));
+        sidePane.getChildren().add(load);
+    }
+
+    public void btnOrderOnAction(ActionEvent actionEvent) throws IOException {
+        sidePane.getChildren().clear();
+        AnchorPane load = FXMLLoader.load(getClass().getResource("/view/OrderManagement.fxml"));
+        sidePane.getChildren().add(load);
+    }
+
+    public void btnOrderDetailsOnAction(ActionEvent actionEvent) throws IOException {
+        sidePane.getChildren().clear();
+        AnchorPane load = FXMLLoader.load(getClass().getResource("/view/OrderDetailsManagement.fxml"));
+        sidePane.getChildren().add(load);
+    }
+
+    public void btnPaymentOnAction(ActionEvent actionEvent) throws IOException {
+        sidePane  .getChildren().clear();
+        AnchorPane load = FXMLLoader.load(getClass().getResource("/view/PaymentManagement.fxml"));
+        sidePane.getChildren().add(load);
+    }
+
+    public void btnProductOnAction(ActionEvent actionEvent) throws IOException {
+        sidePane  .getChildren().clear();
+        AnchorPane load = FXMLLoader.load(getClass().getResource("/view/ProductManagement.fxml"));
+        sidePane.getChildren().add(load);
+    }
 }

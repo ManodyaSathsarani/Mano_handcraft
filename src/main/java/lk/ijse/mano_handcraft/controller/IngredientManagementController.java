@@ -2,37 +2,36 @@ package lk.ijse.mano_handcraft.controller;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import lk.ijse.mano_handcraft.dto.UserListDto;
-import lk.ijse.mano_handcraft.dto.tm.UserListTM;
-import lk.ijse.mano_handcraft.model.UserListModel;
+import lk.ijse.mano_handcraft.dto.IngredientManagementDto;
+import lk.ijse.mano_handcraft.dto.tm.IngredientManagementTM;
+import lk.ijse.mano_handcraft.model.IngredientManagementModel;
+
 
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class UserListController implements Initializable {
+public class IngredientManagementController implements Initializable {
     public Label lblId;
     public TextField txtName;
-    public TextField txtUserName;
-    public TextField txtPassword;
-    public TextField txtRole;
-    public TextField txtRegistrationDate;
-
-    public TableView<UserListTM> tblUserList;
-    public TableColumn<UserListTM, String> colId;
-    public TableColumn<UserListTM, String> colName;
-    public TableColumn<UserListTM, String> colUserName;
-    public TableColumn<UserListTM, String> colPassword;
-    public TableColumn<UserListTM, String> colRole;
-    public TableColumn<UserListTM, String> colRegistrationDate;
+    public TextField txtUnit;
 
 
-    private final UserListModel userListModel = new UserListModel();
+    @FXML
+    private TableView<IngredientManagementTM> tblIngredientManagement;
+
+    public TableColumn<IngredientManagementTM, String> colId;
+    public TableColumn<IngredientManagementTM, String> colName;
+    public TableColumn<IngredientManagementTM, String> colUnit;
+
+
+    private final  IngredientManagementModel ingredientManagementModel = new IngredientManagementModel();
 
     public Button btnSave;
     public Button btnUpdate;
@@ -41,12 +40,10 @@ public class UserListController implements Initializable {
 
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        colId.setCellValueFactory(new PropertyValueFactory<>("user_Id"));
-        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        colUserName.setCellValueFactory(new PropertyValueFactory<>("userName"));
-        colPassword.setCellValueFactory(new PropertyValueFactory<>("Password"));
-        colRole.setCellValueFactory(new PropertyValueFactory<>("role"));
-        colRegistrationDate.setCellValueFactory(new PropertyValueFactory<>("registration_Date"));
+        colId.setCellValueFactory(new PropertyValueFactory<>("ingredient_Id"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("ingredient_Name"));
+        colUnit.setCellValueFactory(new PropertyValueFactory<>("unit"));
+
 
         try {
             resetPage();
@@ -58,17 +55,16 @@ public class UserListController implements Initializable {
     }
 
     public void loadTableData() throws SQLException, ClassNotFoundException {
-        tblUserList.setItems(FXCollections.observableArrayList(
-                userListModel.getAllUsers()
+        tblIngredientManagement.setItems(FXCollections.observableArrayList(
+                ingredientManagementModel.getAllIngrediants()
+
                         .stream()
-                        .map(userListDto -> new UserListTM(
-                                userListDto.getUser_Id(),
-                                userListDto.getName(),
-                                userListDto.getUserName(),
-                                userListDto.getPassword(),
-                                userListDto.getRole(),
-                                userListDto.getRegistration_Date()
-                        )).toList()
+                        .map(ingredientManagementDto -> new IngredientManagementTM(
+                                ingredientManagementDto.getIngredient_Id(),
+                                ingredientManagementDto.getIngredient_Name(),
+                                ingredientManagementDto.getUnit()
+                        )).
+                        toList()
         ));
     }
 
@@ -82,10 +78,13 @@ public class UserListController implements Initializable {
             btnUpdate.setDisable(true);
 
             txtName.setText(null);
-            txtUserName.setText(null);
-            txtPassword.setText(null);
-            txtRole.setText(null);
-            txtRegistrationDate.setText(null);
+            txtUnit.setText(null);
+
+
+
+
+
+
 
 
         } catch (Exception e) {
@@ -97,21 +96,18 @@ public class UserListController implements Initializable {
     public void btnSaveOnAction(ActionEvent actionEvent) {
         String userId = lblId.getText();
         String userName = txtName.getText();
-        String userUserName = txtUserName.getText();
-        String userContact = txtPassword.getText();
-        String userRole = txtRole.getText();
-        String userRegistrationDate = txtRegistrationDate.getText();
+        String userUnit  = txtUnit.getText();
 
-        UserListDto userListDto = new UserListDto(
+
+
+
+        IngredientManagementDto ingredientManagementDto = new IngredientManagementDto(
                 userId,
                 userName,
-                userUserName,
-                userContact,
-                userRole,
-                userRegistrationDate
+                userUnit
         );
         try {
-            boolean isSaved = userListModel.saveUser(userListDto);
+            boolean isSaved = ingredientManagementModel.saveIngredient(ingredientManagementDto);
 
             if (isSaved) {
                 resetPage();
@@ -128,22 +124,17 @@ public class UserListController implements Initializable {
     public void btnUpdateOnAction(ActionEvent actionEvent) {
         String userId = lblId.getText();
         String userName = txtName.getText();
-        String userUserName = txtUserName.getText();
-        String userContact = txtPassword.getText();
-        String userRole = txtRole.getText();
-        String userRegistrationDate = txtRegistrationDate.getText();
+        String userUserName = txtUnit.getText();
 
 
-        UserListDto userListDto = new UserListDto(
+        IngredientManagementDto ingredientManagementDto = new IngredientManagementDto(
                 userId,
                 userName,
-                userUserName,
-                userContact,
-                userRole,
-                userRegistrationDate
+                userUserName
+
         );
         try {
-            boolean isUpdated = userListModel.updateUser(userListDto);
+            boolean isUpdated = ingredientManagementModel.updateIngredient(ingredientManagementDto);
             if (isUpdated) {
                 resetPage();
                 new Alert(Alert.AlertType.INFORMATION, "Updated").show();
@@ -166,9 +157,9 @@ public class UserListController implements Initializable {
         Optional<ButtonType> response = alert.showAndWait();
 
         if (response.isPresent() && response.get() == ButtonType.YES) {
-            String userId = lblId.getText();
+            String ingredient_id = lblId.getText();
             try {
-                boolean isDeleted = userListModel.deleteUser(userId);
+                boolean isDeleted = ingredientManagementModel.deleteIngredient(ingredient_id);
                 if (isDeleted) {
                     resetPage();
                     new Alert(Alert.AlertType.INFORMATION, "Deleted").show();
@@ -188,20 +179,17 @@ public class UserListController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = userListModel.getNextUserId();
+        String nextId = ingredientManagementModel.getNextIngredient_Id();
         lblId.setText(nextId);
     }
 
     public void getData(MouseEvent mouseEvent) {
-        UserListTM selectedItem = tblUserList.getSelectionModel().getSelectedItem();
+        IngredientManagementTM selectedItem = tblIngredientManagement.getSelectionModel().getSelectedItem();
 
         if (selectedItem != null) {
-            lblId.setText(selectedItem.getUser_Id());
-            txtUserName.setText(selectedItem.getName());
-            txtName.setText(selectedItem.getUserName());
-            txtPassword.setText(selectedItem.getPassword());
-            txtRole.setText(selectedItem.getRole());
-            txtRegistrationDate.setText(selectedItem.getRegistration_Date());
+            lblId.setText(selectedItem.getIngredient_Id());
+
+
 
             btnSave.setDisable(true);
             btnUpdate.setDisable(false);
