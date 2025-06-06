@@ -76,11 +76,6 @@
                               <Font name="Serif Bold" size="24.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btnOrderDetails" mnemonicParsing="false" onAction="#btnOrderDetailsOnAction" style="-fx-background-color: fofofo;" text="Orderdetails Management" textFill="#f2eeee">
-                           <font>
-                              <Font name="Serif Bold" size="24.0" />
-                           </font>
-                        </Button>
                         <Button fx:id="btnPayment" mnemonicParsing="false" onAction="#btnPaymentOnAction" style="-fx-background-color: fofofo;" text="Payment Management" textFill="#fcfafa">
                            <font>
                               <Font name="Serif Bold" size="24.0" />

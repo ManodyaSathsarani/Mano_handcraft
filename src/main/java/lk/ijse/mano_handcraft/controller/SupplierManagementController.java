@@ -57,8 +57,8 @@ public class SupplierManagementController implements Initializable {
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         colId.setCellValueFactory(new PropertyValueFactory<>("supplier_id"));
-        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        colContactInformation.setCellValueFactory(new PropertyValueFactory<>("contact_information"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("supplier_name"));
+        colContactInformation.setCellValueFactory(new PropertyValueFactory<>("contact_info"));
 
 
 
@@ -121,7 +121,45 @@ public class SupplierManagementController implements Initializable {
         }
     }
 
+    private boolean validateInputs() {
+        String name = txtName.getText().trim();
+        String contact = txtContactInformation.getText().trim();
+
+        if (name.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Supplier name is required.");
+            return false;
+        }
+
+        if (!name.matches("[A-Za-z ]{2,}")) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Supplier name must contain only letters and spaces.");
+            return false;
+        }
+
+        if (contact.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Contact information is required.");
+            return false;
+        }
+
+        // Simple phone/email pattern check (optional)
+        if (!contact.matches("^(\\+\\d{1,3}[- ]?)?\\d{10}$") && !contact.matches("^.+@.+\\..+$")) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Enter a valid phone number or email.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+
     public void btnSaveOnAction(ActionEvent actionEvent) {
+        if (!validateInputs()) return;
         String userId = lblId.getText();
         String userName = txtName.getText();
         String userContactInformation = txtContactInformation.getText();
@@ -153,6 +191,7 @@ public class SupplierManagementController implements Initializable {
     }
 
     public void btnUpdateOnAction(ActionEvent actionEvent) {
+        if (!validateInputs()) return;
         String userId = lblId.getText();
         String userName = txtName.getText();
         String userContactInformation = txtContactInformation.getText();

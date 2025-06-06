@@ -14,20 +14,20 @@ public class EmployeeManagementDto {
 
     }
 
-    public EmployeeManagementDto (String employee_Id ,String name ,String role,String hire_date,String phone,String address){
-        this.employee_Id =employee_Id;
-        this.name=name;
-        this.role=role;
-        this.hire_date=hire_date ;
-        this.phone=phone;
-        this.address=address;
+    public EmployeeManagementDto(String employee_Id, String name, String role, String hire_date, String phone, String address) {
+        this.employee_Id = employee_Id;
+        this.name = name;
+        this.role = role;
+        this.hire_date = hire_date;
+        this.phone = phone;
+        this.address = address;
     }
 
     public String getEmployee_Id() {
         return employee_Id;
     }
 
-    public void setEmployee_Id(String Employee_Id) {
+    public void setEmployee_Id(String employee_Id) {
         this.employee_Id = employee_Id;
     }
 
@@ -52,7 +52,7 @@ public class EmployeeManagementDto {
     }
 
     public void setHire_date(String hire_date) {
-        hire_date = hire_date;
+        this.hire_date = hire_date;
     }
 
     public String getPhone() {

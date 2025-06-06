@@ -122,8 +122,57 @@ public class ProductManagementController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Something went wrong!").show();
         }
     }
+    private boolean validateAllInputs() {
+        String name = txtName.getText().trim();
+        String categoryId = txtCatagorieId.getText().trim();
+        String description = txtDescription.getText().trim();
+        String priceText = txtPrice.getText().trim();
+
+        if (name.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Product name is required.");
+            return false;
+        }
+
+        if (categoryId.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Category ID is required.");
+            return false;
+        }
+
+        if (description.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Description is required.");
+            return false;
+        }
+
+        if (priceText.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Price is required.");
+            return false;
+        }
+
+        try {
+            double price = Double.parseDouble(priceText);
+            if (price < 0) {
+                showAlert(Alert.AlertType.WARNING, "Validation Error", "Price cannot be negative.");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Price must be a valid number.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.show();
+    }
+
 
     public void btnSaveOnAction(ActionEvent actionEvent) {
+        if (!validateAllInputs()) return;
         String productId = lblId.getText();
         String Name = txtName.getText();
         String CatagorieId = txtCatagorieId.getText();
@@ -153,7 +202,7 @@ public class ProductManagementController implements Initializable {
     }
 
     public void btnUpdateOnAction(ActionEvent actionEvent) {
-
+        if (!validateAllInputs()) return;
         String productId = lblId.getText();
         String Name = txtName.getText();
         String CatagorieId = txtCatagorieId.getText();

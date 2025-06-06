@@ -33,7 +33,7 @@ public class InventoryManagementController implements Initializable {
     private Button btnUpdate;
 
     @FXML
-    private TableColumn<InventoryManagementTM ,String> colIngredientId;
+    private TableColumn<InventoryManagementTM, String> colIngredientId;
 
     @FXML
     private TableColumn<InventoryManagementTM, String> colInventoryId;
@@ -77,25 +77,23 @@ public class InventoryManagementController implements Initializable {
     }
 
 
-
     public void loadTableData() throws SQLException, ClassNotFoundException {
         tblInventory.setItems(FXCollections.observableArrayList(
                 inventoryManagementModel.getAllInventory()
 
                         .stream()
-                        .map(inventoryManagementDto -> new InventoryManagementTM(
-                                inventoryManagementDto.getInventory_id(),
-                                inventoryManagementDto.getIngredient_id(),
-                                inventoryManagementDto.getQuantity_in_stock(),
-                                inventoryManagementDto.getLast_updated()
-                        )).
+                        .map(inventoryManagementDto -> {
+                                    return new InventoryManagementTM(
+                                            inventoryManagementDto.getInventory_id(),
+                                            inventoryManagementDto.getIngredient_id(),
+                                            inventoryManagementDto.getQuantity_in_stock(),
+                                            inventoryManagementDto.getLast_updated()
+                                    );
+                                }
+
+                        ).
                         toList()
         ));
-
-
-
-
-
 
     }
 
@@ -113,26 +111,71 @@ public class InventoryManagementController implements Initializable {
             txtQuantitiyInStock.setText(null);
 
 
-
-
-
-
-
-
-
         } catch (Exception e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Something went wrong!").show();
         }
     }
 
+    private boolean validateInputs() {
+        String ingredientId = txtIngredientId.getText();
+        String quantityStr = txtQuantitiyInStock.getText();
+        String lastUpdate = txtLastUpdate.getText();
+
+        // Validate Ingredient ID
+        if (ingredientId == null || ingredientId.isBlank()) {
+            showValidationError("Ingredient ID is required.");
+            return false;
+        }
+
+        if (!ingredientId.matches("I\\d{3}")) {
+            showValidationError("Ingredient ID must follow the format I001, I002, etc.");
+            return false;
+        }
+
+        // Validate Quantity
+        if (quantityStr == null || quantityStr.isBlank()) {
+            showValidationError("Quantity is required.");
+            return false;
+        }
+
+        try {
+            double quantity = Double.parseDouble(quantityStr);
+            if (quantity <= 0) {
+                showValidationError("Quantity must be greater than 0.");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            showValidationError("Quantity must be a valid number.");
+            return false;
+        }
+
+        // Validate Last Update Date (yyyy-MM-dd format)
+        if (lastUpdate == null || lastUpdate.isBlank()) {
+            showValidationError("Last Update Date is required.");
+            return false;
+        }
+
+        if (!lastUpdate.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            showValidationError("Date must be in format YYYY-MM-DD.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private void showValidationError(String message) {
+        new Alert(Alert.AlertType.WARNING, message).show();
+    }
+
+
     public void btnSaveOnAction(ActionEvent actionEvent) {
+
+        if (!validateInputs()) return;
         String inventoryId = lblInventoryId.getText();
         String ingredientId = txtIngredientId.getText();
         Double quantityInStock = Double.valueOf(txtQuantitiyInStock.getText());
         String lastUpdate = txtLastUpdate.getText();
-
-
 
 
         InventoryManagementDto inventoryManagementDto = new InventoryManagementDto(
@@ -159,11 +202,12 @@ public class InventoryManagementController implements Initializable {
     }
 
     public void btnUpdateOnAction(ActionEvent actionEvent) {
+
+        if (!validateInputs()) return;
         String inventoryId = lblInventoryId.getText();
         String ingredientId = txtIngredientId.getText();
         Double quantityInStock = Double.valueOf(txtQuantitiyInStock.getText());
         String lastUpdate = txtLastUpdate.getText();
-
 
 
         InventoryManagementDto inventoryManagementDto = new InventoryManagementDto(
@@ -219,7 +263,7 @@ public class InventoryManagementController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = inventoryManagementModel.getLatestInventoryId();
+        String nextId = inventoryManagementModel.getNextInventory_Id();
         lblInventoryId.setText(nextId);
     }
 
@@ -228,7 +272,6 @@ public class InventoryManagementController implements Initializable {
 
         if (selectedItem != null) {
             lblInventoryId.setText(selectedItem.getInventory_id());
-
 
 
             btnSave.setDisable(true);

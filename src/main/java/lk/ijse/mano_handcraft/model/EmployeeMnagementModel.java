@@ -19,14 +19,13 @@ public class EmployeeMnagementModel {
                 employeeManagementDto.getAddress());
     }
 
-    public boolean updateEmployee(EmployeeManagementDto customerManagementDto) throws SQLException, ClassNotFoundException {
+    public boolean updateEmployee(EmployeeManagementDto employeeManagementDto) throws SQLException, ClassNotFoundException {
         return CrudUtil.execute("UPDATE employees SET employee_name = ?, role = ?, hire_date = ?, phone = ?, address = ? WHERE employee_id = ?",
-                customerManagementDto.getName(),
-                customerManagementDto.getRole(),
-                customerManagementDto.getHire_date(),
-                customerManagementDto.getPhone(),
-                customerManagementDto.getAddress(),
-                customerManagementDto.getEmployee_Id());
+                employeeManagementDto.getName(),
+                employeeManagementDto.getRole(),
+                employeeManagementDto.getHire_date(),
+                employeeManagementDto.getPhone(),
+                employeeManagementDto.getAddress());
 
     }
 
@@ -69,6 +68,6 @@ public class EmployeeMnagementModel {
 
             return nextIdString;
         }
-        return tableCharacter+ "1";
+        return tableCharacter+ "001";
     }
 }

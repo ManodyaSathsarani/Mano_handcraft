@@ -6,15 +6,19 @@ public class OrderManagementTM {
     private String employee_id;
     private String order_date;
     private String total_amount;
+    private String product_id;
+    private String quantity;
+    private String price;
 
-    public OrderManagementTM() {
-    }
-    public OrderManagementTM(String order_id, String customer_id, String employee_id, String order_date, String total_amount) {
+    public OrderManagementTM(String order_id, String customer_id, String employee_id, String order_date, String total_amount, String product_id, String quantity, String price) {
         this.order_id = order_id;
         this.customer_id = customer_id;
         this.employee_id = employee_id;
         this.order_date = order_date;
         this.total_amount = total_amount;
+        this.product_id = product_id;
+        this.quantity = quantity;
+        this.price = price;
     }
 
     public String getOrder_id() {
@@ -55,6 +59,30 @@ public class OrderManagementTM {
 
     public void setTotal_amount(String total_amount) {
         this.total_amount = total_amount;
+    }
+
+    public String getProduct_id() {
+        return product_id;
+    }
+
+    public void setProduct_id(String product_id) {
+        this.product_id = product_id;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 }
 

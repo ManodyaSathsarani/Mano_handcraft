@@ -58,6 +58,6 @@ public class CustomerManagementModel {
 
             return nextIdString;
         }
-        return tableCharacter+ "1";
+        return tableCharacter+ "001";
     }
 }

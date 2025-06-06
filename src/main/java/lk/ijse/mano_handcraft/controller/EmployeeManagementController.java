@@ -12,6 +12,8 @@ import lk.ijse.mano_handcraft.model.EmployeeMnagementModel;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -41,10 +43,10 @@ public class EmployeeManagementController implements Initializable {
 
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        colId.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        colId.setCellValueFactory(new PropertyValueFactory<>("employee_Id"));
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colRole.setCellValueFactory(new PropertyValueFactory<>("role"));
-        colHireDate.setCellValueFactory(new PropertyValueFactory<>("hireDate"));
+        colHireDate.setCellValueFactory(new PropertyValueFactory<>("hire_date"));
         colPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
         colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
 
@@ -94,6 +96,38 @@ public class EmployeeManagementController implements Initializable {
         }
     }
 
+    private boolean validateInputs(String name, String role, String hireDate, String phone, String address) {
+        if (name.isEmpty() || role.isEmpty() || hireDate.isEmpty() || phone.isEmpty() || address.isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "All fields must be filled out!").show();
+            return false;
+        }
+
+        if (!validatePhoneNumber(phone)) {
+            new Alert(Alert.AlertType.WARNING, "Invalid phone number! Must be 10 digits.").show();
+            return false;
+        }
+
+        if (!validateDate(hireDate)) {
+            new Alert(Alert.AlertType.WARNING, "Invalid date format! Use yyyy-MM-dd.").show();
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean validatePhoneNumber(String phone) {
+        return phone.matches("\\d{10}");
+    }
+
+    private boolean validateDate(String dateStr) {
+        try {
+            LocalDate.parse(dateStr); // Assumes format yyyy-MM-dd
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+
     public void btnSaveOnAction(ActionEvent actionEvent) {
         String employeeId = lblId.getText();
         String employeeName = txtName.getText();
@@ -102,6 +136,11 @@ public class EmployeeManagementController implements Initializable {
         String employeePhone = txtPhone.getText();
         String employeeAddress = txtAddress.getText();
 
+
+//        if (!validateInputs(employeeName, employeeRole, employeeHireDate, employeePhone, employeeAddress)) {
+//            return;
+//        }
+
         EmployeeManagementDto employeeManagementDto = new EmployeeManagementDto(
                 employeeId,
                 employeeName,
@@ -109,6 +148,7 @@ public class EmployeeManagementController implements Initializable {
                 employeeHireDate,
                 employeePhone,
                 employeeAddress
+
         );
         try {
             boolean isSaved = employeeMnagementModel.saveEmployee(employeeManagementDto);
@@ -132,6 +172,10 @@ public class EmployeeManagementController implements Initializable {
         String employeeHireDate = txtHireDate.getText();
         String employeePhone = txtPhone.getText();
         String employeeAddress = txtAddress.getText();
+
+//        if (!validateInputs(employeeName, employeeRole, employeeHireDate, employeePhone, employeeAddress)) {
+//            return;
+//        }
 
         EmployeeManagementDto employeeManagementDto = new EmployeeManagementDto(
                 employeeId,

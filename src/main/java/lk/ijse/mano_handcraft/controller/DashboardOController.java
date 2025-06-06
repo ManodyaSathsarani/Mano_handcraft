@@ -88,11 +88,7 @@ public class DashboardOController {
         sidePane.getChildren().add(load);
     }
 
-    public void btnOrderDetailsOnAction(ActionEvent actionEvent) throws IOException {
-        sidePane.getChildren().clear();
-        AnchorPane load = FXMLLoader.load(getClass().getResource("/view/OrderDetailsManagement.fxml"));
-        sidePane.getChildren().add(load);
-    }
+
 
     public void btnPaymentOnAction(ActionEvent actionEvent) throws IOException {
         sidePane  .getChildren().clear();

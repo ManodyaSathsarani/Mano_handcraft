@@ -79,8 +79,25 @@ public class CategorieManagementController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Something went wrong!").show();
         }
     }
+    private boolean validateCategoryInput() {
+        String name = txtName.getText();
+
+        if (name == null || name.trim().isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "Category name cannot be empty").show();
+            return false;
+        }
+
+        if (!name.matches("^[A-Za-z ]+$")) {
+            new Alert(Alert.AlertType.WARNING, "Category name must only contain letters and spaces").show();
+            return false;
+        }
+
+        return true;
+    }
+
 
     public void btnSaveOnAction(ActionEvent actionEvent) {
+        if (!validateCategoryInput()) return;
         String id = lblId.getText();
         String name = txtName.getText();
 
@@ -105,6 +122,7 @@ public class CategorieManagementController implements Initializable {
     }
 
     public void btnUpdateOnAction(ActionEvent actionEvent) {
+        if (!validateCategoryInput()) return;
         String id = lblId.getText();
         String name = txtName.getText();
 

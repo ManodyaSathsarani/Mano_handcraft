@@ -93,8 +93,52 @@ public class UserListController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Something went wrong!").show();
         }
     }
+    private boolean validateInputs() {
+        String name = txtName.getText().trim();
+        String userName = txtUserName.getText().trim();
+        String password = txtPassword.getText().trim();
+        String role = txtRole.getText().trim();
+        String regDate = txtRegistrationDate.getText().trim();
+
+        if (name.isEmpty() || userName.isEmpty() || password.isEmpty() || role.isEmpty() || regDate.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "All fields are required.");
+            return false;
+        }
+
+        if (!name.matches("[A-Za-z ]+")) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Name must only contain letters and spaces.");
+            return false;
+        }
+
+        if (password.length() < 6) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Password must be at least 6 characters.");
+            return false;
+        }
+
+        if (!role.matches("(?i)(admin|user|manager|staff)")) {  // Example roles
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Role must be one of: Admin, User, Manager, Staff.");
+            return false;
+        }
+
+        if (!regDate.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Registration date must be in format YYYY-MM-DD.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
 
     public void btnSaveOnAction(ActionEvent actionEvent) {
+        if (!validateInputs()) return;
         String userId = lblId.getText();
         String userName = txtName.getText();
         String userUserName = txtUserName.getText();
@@ -126,6 +170,7 @@ public class UserListController implements Initializable {
     }
 
     public void btnUpdateOnAction(ActionEvent actionEvent) {
+        if (!validateInputs()) return;
         String userId = lblId.getText();
         String userName = txtName.getText();
         String userUserName = txtUserName.getText();

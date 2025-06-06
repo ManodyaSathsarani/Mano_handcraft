@@ -10,12 +10,16 @@ import java.util.ArrayList;
 
 public class OrderManagementModel {
     public boolean saveOrder(OrderManagementDto orderManagementDto) throws SQLException, ClassNotFoundException {
-        return CrudUtil.execute("INSERT INTO orders (order_id, customer_id, employee_id,oder_date,total_amount) VALUES ( ?,?,?,?,?,)",
+        return CrudUtil.execute("INSERT INTO orders (order_id, customer_id, employee_id,oder_date,total_amount,product_id,quantity,price) VALUES ( ?,?,?,?,?,?,?)",
                 orderManagementDto.getOrder_id(),
-                orderManagementDto.getOrder_id(),
+                orderManagementDto.getCustomer_id(),
                 orderManagementDto.getEmployee_id(),
                 orderManagementDto.getOrder_date(),
-                orderManagementDto.getTotal_amount());
+                orderManagementDto.getTotal_amount(),
+                orderManagementDto.getProduct_id(),
+                orderManagementDto.getQuantity(),
+                orderManagementDto.getPrice());
+
 
 
 
@@ -46,7 +50,10 @@ public class OrderManagementModel {
                     resultSet.getString(2),
                     resultSet.getString(3),
                     resultSet.getString(4),
-                    resultSet.getString(5)
+                    resultSet.getString(5),
+                    resultSet.getString(6),
+                    resultSet.getString(7),
+                    resultSet.getString(8)
 
             );
             orderManagement.add(orderManagementDto);
@@ -67,6 +74,6 @@ public class OrderManagementModel {
 
             return nextIdString;
         }
-        return tableCharacter+ "1";
+        return tableCharacter+ "001";
     }
 }

@@ -86,8 +86,49 @@ public class CustomerManagementController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Something went wrong!").show();
         }
     }
+    private boolean validateCustomerInput() {
+        String name = txtName.getText();
+        String phone = txtPhone.getText();
+        String address = txtAddress.getText();
+
+        // Validate name
+        if (name == null || name.trim().isEmpty()) {
+            showValidationAlert("Name is required.");
+            return false;
+        }
+
+        if (!name.matches("^[A-Za-z ]+$")) {
+            showValidationAlert("Name must only contain letters and spaces.");
+            return false;
+        }
+
+        // Validate phone (Sri Lankan format: starts with 07 and has 10 digits)
+        if (phone == null || phone.trim().isEmpty()) {
+            showValidationAlert("Phone number is required.");
+            return false;
+        }
+
+        if (!phone.matches("^07[0-9]{8}$")) {
+            showValidationAlert("Phone number must be a valid Sri Lankan mobile number (e.g., 0771234567).");
+            return false;
+        }
+
+        // Validate address
+        if (address == null || address.trim().isEmpty()) {
+            showValidationAlert("Address is required.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private void showValidationAlert(String message) {
+        new Alert(Alert.AlertType.WARNING, message).show();
+    }
+
 
     public void btnSaveOnAction(ActionEvent actionEvent) {
+        if (!validateCustomerInput()) return;
         String customer = lblId.getText();
         String name = txtName.getText();
         String phone = txtPhone.getText();
@@ -117,6 +158,7 @@ public class CustomerManagementController implements Initializable {
     }
 
     public void btnUpdateOnAction(ActionEvent actionEvent) {
+        if (!validateCustomerInput()) return;
         String customerId = lblId.getText();
         String customerName = txtName.getText();
         String customerPhone = txtPhone.getText();

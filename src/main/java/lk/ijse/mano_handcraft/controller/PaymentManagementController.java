@@ -149,8 +149,69 @@ public class PaymentManagementController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Something went wrong!").show();
         }
     }
+    private boolean validateAllInputs() {
+        String orderId = txtOrderId.getText().trim();
+        String amount = txtAmount.getText().trim();
+        String method = txtMethod.getText().trim();
+        String status = txtStatus.getText().trim();
+        String paymentDate = txtPaymentDate.getText().trim();
+
+        if (orderId.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Order ID is required.");
+            return false;
+        }
+
+        if (amount.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Amount is required.");
+            return false;
+        }
+        try {
+            double amt = Double.parseDouble(amount);
+            if (amt < 0) {
+                showAlert(Alert.AlertType.WARNING, "Validation Error", "Amount cannot be negative.");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Amount must be a valid number.");
+            return false;
+        }
+
+        if (method.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Payment method is required.");
+            return false;
+        }
+
+        if (status.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Status is required.");
+            return false;
+        }
+
+        if (paymentDate.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Payment date is required.");
+            return false;
+        }
+        try {
+            java.time.LocalDate.parse(paymentDate);  // expects format yyyy-MM-dd
+        } catch (java.time.format.DateTimeParseException e) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Payment date must be in yyyy-MM-dd format.");
+            return false;
+        }
+
+        return true;
+    }
+
+    // Helper method for showing alerts
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.show();
+    }
+
 
     public void btnSaveOnAction(ActionEvent actionEvent) {
+        if (!validateAllInputs()) return;
         String userId = lblId.getText();
         String userOrderId = txtOrderId.getText();
         String userAmount = txtAmount.getText();
@@ -188,6 +249,7 @@ public class PaymentManagementController implements Initializable {
     }
 
     public void btnUpdateOnAction(ActionEvent actionEvent) {
+        if (!validateAllInputs()) return;
         String userId = lblId.getText();
         String userOrderId = txtOrderId.getText();
         String userAmount = txtAmount.getText();
