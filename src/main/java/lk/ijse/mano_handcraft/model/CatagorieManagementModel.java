@@ -56,7 +56,7 @@ public class CatagorieManagementModel {
 
             return nextIdString;
         }
-        return tableCharacter+ "1";
+        return tableCharacter+ "001";
     }
 
 }

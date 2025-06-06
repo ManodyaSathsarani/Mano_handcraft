@@ -26,11 +26,14 @@ public class OrderManagementModel {
     }
 
     public boolean updateOrder(OrderManagementDto orderManagementDto ) throws SQLException, ClassNotFoundException {
-        return CrudUtil.execute("UPDATE orders SET customer_id = ?, employee_id = ?, oder_date = ?, total_amount = ? WHERE order_id = ?",
+        return CrudUtil.execute("UPDATE orders SET customer_id = ?, employee_id = ?, oder_date = ?, total_amount = ? product_id=? quantity = ? price=? WHERE order_id = ?",
                 orderManagementDto.getCustomer_id(),
                 orderManagementDto.getEmployee_id(),
                 orderManagementDto.getOrder_date(),
                 orderManagementDto.getTotal_amount(),
+                orderManagementDto.getProduct_id(),
+                orderManagementDto.getQuantity(),
+                orderManagementDto.getPrice(),
                 orderManagementDto.getOrder_id());
 
 
@@ -50,10 +53,10 @@ public class OrderManagementModel {
                     resultSet.getString(2),
                     resultSet.getString(3),
                     resultSet.getString(4),
-                    resultSet.getString(5),
+                    resultSet.getDouble(5),
                     resultSet.getString(6),
-                    resultSet.getString(7),
-                    resultSet.getString(8)
+                    resultSet.getInt(7),
+                    resultSet.getDouble(8)
 
             );
             orderManagement.add(orderManagementDto);

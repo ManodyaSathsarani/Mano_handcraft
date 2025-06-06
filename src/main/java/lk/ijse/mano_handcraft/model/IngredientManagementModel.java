@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class IngredientManagementModel {
     public boolean saveIngredient(IngredientManagementDto ingredientManagementDto) throws SQLException, ClassNotFoundException {
-        return CrudUtil.execute ("INSERT INTO ingredients (ingredient_id, ingredient_name, unit_price, quantity) VALUES ( ?,?,?,?)",
+        return CrudUtil.execute ("INSERT INTO ingredients (ingredient_id, ingredient_name, unit) VALUES ( ?,?,?)",
                 ingredientManagementDto.getIngredient_Id(),
                 ingredientManagementDto.getIngredient_Name(),
               ingredientManagementDto.getUnit());
@@ -21,7 +21,7 @@ public class IngredientManagementModel {
     }
 
     public boolean updateIngredient(IngredientManagementDto ingredientManagementDto) throws SQLException, ClassNotFoundException {
-        return CrudUtil.execute ("UPDATE ingredients SET ingredient_name = ?, unit_price = ?, quantity = ? WHERE ingredient_id = ?",
+        return CrudUtil.execute ("UPDATE ingredients SET ingredient_name = ?, unit = ? WHERE ingredient_id = ?",
                 ingredientManagementDto.getIngredient_Name(),
                 ingredientManagementDto.getUnit(),
                 ingredientManagementDto.getIngredient_Id());

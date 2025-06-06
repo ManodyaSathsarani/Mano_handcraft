@@ -65,6 +65,6 @@ public class ProductManagementModel {
 
             return nextIdString;
         }
-        return tableCharacter+ "1";
+        return tableCharacter+ "001";
     }
 }

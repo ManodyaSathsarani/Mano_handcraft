@@ -192,6 +192,24 @@ public class OrderManagementController implements Initializable {
             showAlert(Alert.AlertType.WARNING, "Validation Error", "Total Amount is required.");
             return false;
         }
+        if (productId.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Product ID is required.");
+            return false;
+        }
+        if (quantity.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Quantity is required.");
+            return false;
+        }
+        try {
+            int qty = Integer.parseInt(quantity);
+            if (qty <= 0) {
+                showAlert(Alert.AlertType.WARNING, "Validation Error", "Quantity must be greater than zero.");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Quantity must be a valid integer.");
+            return false;
+        }
 
         try {
             double amount = Double.parseDouble(totalAmount);
@@ -223,10 +241,10 @@ public class OrderManagementController implements Initializable {
         String userCustomerId = txtCustomerId.getText();
         String userEmployeeId = txtEmployeeId.getText();
         String userOrderDate = txtOrderDate.getText();
-        String userTotalAmount = txtTotalAmount.getText();
+        Double userTotalAmount = Double.valueOf(txtTotalAmount.getText());
         String userProductId = txtProductId.getText();
-        String userQuantity = txtQuantity.getText();
-        String userPrice = txtPrice.getText();
+        Integer userQuantity = Integer.valueOf(txtQuantity.getText());
+        Double userPrice = Double.valueOf(txtPrice.getText());
 
 
 
@@ -265,10 +283,10 @@ public class OrderManagementController implements Initializable {
         String userCustomerId = txtCustomerId.getText();
         String userEmployeeId = txtEmployeeId.getText();
         String userOrderDate = txtOrderDate.getText();
-        String userTotalAmount = txtTotalAmount.getText();
+        Double userTotalAmount = Double.valueOf(txtTotalAmount.getText());
         String userProductId = txtProductId.getText();
-        String userQuantity = txtQuantity.getText();
-        String userPrice = txtPrice.getText();
+        Integer userQuantity = Integer.valueOf(txtQuantity.getText());
+        Double userPrice = Double.valueOf(txtPrice.getText());
 
         OrderManagementDto orderManagementDto = new OrderManagementDto(
                 userId,
@@ -339,10 +357,10 @@ public class OrderManagementController implements Initializable {
             txtCustomerId.setText(selectedItem.getCustomer_id());
             txtEmployeeId.setText(selectedItem.getEmployee_id());
             txtOrderDate.setText(selectedItem.getOrder_date());
-            txtTotalAmount.setText(selectedItem.getTotal_amount());
+            txtTotalAmount.setText(String.valueOf(selectedItem.getTotal_amount()));
             txtProductId.setText(selectedItem.getProduct_id());
-            txtQuantity.setText(selectedItem.getQuantity());
-            txtPrice.setText(selectedItem.getPrice());
+            txtQuantity.setText(String.valueOf(selectedItem.getQuantity()));
+            txtPrice.setText(String.valueOf(selectedItem.getPrice()));
 
 
             btnSave.setDisable(true);

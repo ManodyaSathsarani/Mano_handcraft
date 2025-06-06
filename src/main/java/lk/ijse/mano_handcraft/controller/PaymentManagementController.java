@@ -181,8 +181,8 @@ public class PaymentManagementController implements Initializable {
             return false;
         }
 
-        if (status.isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Validation Error", "Status is required.");
+        if (status.isEmpty() || (!status.equalsIgnoreCase("Pending") && !status.equalsIgnoreCase("Completed"))) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Status is required and must be Pending or Completed.");
             return false;
         }
 

@@ -64,6 +64,6 @@ public class UserListModel {
 
             return nextIdString;
         }
-        return tableCharacter+ "1";
+        return tableCharacter+ "001";
     }
 }
